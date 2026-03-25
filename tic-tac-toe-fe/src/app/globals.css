@@ -1,0 +1,293 @@
+@import "tailwindcss";
+
+.app-container {
+  min-height: 100vh;
+  background: #2dd4bf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Outfit", sans-serif;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+.card {
+  position: relative;
+  z-index: 1;
+  width: 420px;
+  background: rgba(46, 64, 53, 0.85);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 24px;
+  padding: 36px;
+}
+
+.label {
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.heading {
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 32px;
+  color: #2dd4bf;
+}
+
+.btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: block;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background-color: #6366f1;
+  color: #fff;
+}
+.btn-primary:hover:not(:disabled) {
+  background-color: #8b5cf6;
+}
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.7);
+}
+.btn-secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.09);
+}
+.btn-danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+}
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 6px 0 16px;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 12px;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+.sub {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  font-family: "JetBrains Mono", monospace;
+  margin-bottom: 28px;
+}
+
+.board-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.chip {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  transition: all 0.3s;
+}
+.chip.x-active {
+  border-color: #000000;
+}
+.chip.o-active {
+  border-color: #000000;
+}
+.chip.dim {
+  border-color: rgba(255, 255, 255, 0.06);
+}
+.chip-tag {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+.chip-tag.x {
+  color: #000000;
+}
+.chip-tag.o {
+  color: #ffffff;
+}
+.chip-name {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vs {
+  font-size: 11px;
+  font-family: "JetBrains Mono", monospace;
+  color: rgba(255, 255, 255, 0.25);
+}
+.turn-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 18px;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+.dot.x {
+  background: #000000;
+}
+.dot.o {
+  background: #ffffff;
+}
+
+.turn-you {
+  color: #e8eaf0;
+  font-weight: 600;
+}
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 22px;
+}
+.cell {
+  aspect-ratio: 1;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+.cell:hover:not(.filled):not(.no-hover) {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.03);
+}
+.cell.filled {
+  cursor: default;
+}
+.cell.no-hover {
+  cursor: not-allowed;
+}
+.cell.win-cell {
+  background: rgba(251, 191, 36, 0.08);
+  border-color: rgba(251, 191, 36, 0.35);
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
+}
+.mark {
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1;
+  animation: markIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.mark.x {
+  color: #000000;
+}
+.mark.o {
+  color: #ffffff;
+}
+.result {
+  text-align: center;
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+.result.win {
+  background: rgba(251, 191, 36, 0.08);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+}
+.result.draw {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.result-icon {
+  font-size: 42px;
+  margin-bottom: 8px;
+}
+.result-title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.result-sub {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
+}
+.you-tag {
+  display: inline-block;
+  font-size: 9px;
+  font-family: "JetBrains Mono", monospace;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 4px;
+  padding: 1px 5px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+.leaderboard-container {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16;
+  padding: 20;
+  margin: 16 0 16 0;
+}
+.leaderboard-title {
+  font-size: 12;
+  color: #ffffff;
+  margin-bottom: 16;
+}
+
+.input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 15px;
+  font-family: "Outfit", sans-serif;
+  color: #e8eaf0;
+  outline: none;
+  margin-bottom: 14px;
+}
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+.input:focus {
+  border-color: #2dd4bf;
+}
+.err {
+  color: #f87171;
+  font-size: 13px;
+  margin-top: 12px;
+  text-align: center;
+}
