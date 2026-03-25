@@ -8,7 +8,7 @@ export function getClient(): Client {
             process.env.NEXT_PUBLIC_NAKAMA_SERVER_KEY ?? "defaultkey",
             process.env.NEXT_PUBLIC_NAKAMA_HOST ?? "localhost",
             process.env.NEXT_PUBLIC_NAKAMA_PORT,
-            Boolean(process.env.NEXT_PUBLIC_NAKAMA_USE_SSL) || false
+            process.env.NEXT_PUBLIC_NAKAMA_USE_SSL === "true"
         );
     }
     return client;
