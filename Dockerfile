@@ -3,7 +3,7 @@ FROM node:18-alpine AS node-builder
 WORKDIR /backend
 
 COPY package*.json ./
-RUN npm ci
+RUN npm i
 
 COPY tsconfig.json ./
 COPY src ./src
