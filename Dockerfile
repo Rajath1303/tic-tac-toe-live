@@ -9,24 +9,26 @@ RUN npm install
 COPY tsconfig.json ./
 COPY src ./src
 
-# Build TS -> JS
 RUN npx tsc
 
 
 # ---------- Stage 2: Nakama ----------
 FROM registry.heroiclabs.com/heroiclabs/nakama:3.26.0
 
-# Copy compiled JS into Nakama modules directory
-COPY --from=builder /app/build /nakama/data/modules
+# Create modules dir
+RUN mkdir -p /nakama/data/modules
+
+# Copy compiled JS
+COPY --from=builder /app/build/ /nakama/data/modules/
+
+# Copy config
+COPY local.yml /nakama/data/local.yml
 
 EXPOSE 7349 7350 7351
 
 ENTRYPOINT ["/bin/sh", "-ecx", "\
-    /nakama/nakama migrate up --database.address $DATABASE_URL && \
-    exec /nakama/nakama \
-    --name nakama1 \
-    --database.address $DATABASE_URL \
-    --runtime.path /nakama/data/modules \
-    --logger.level DEBUG \
-    --session.token_expiry_sec 7200 \
-    "]
+/nakama/nakama migrate up --database.address \"$DATABASE_URL\" && \
+exec /nakama/nakama \
+--config /nakama/data/local.yml \
+--database.address \"$DATABASE_URL\" \
+"]
