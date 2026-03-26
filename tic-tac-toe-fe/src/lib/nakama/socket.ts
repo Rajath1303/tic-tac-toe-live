@@ -5,7 +5,8 @@ let socket: Socket | null = null;
 
 export async function connectSocket(session: Session): Promise<Socket> {
     if (socket) return socket;
-    socket = getClient().createSocket(false, false);
+    const useSSL = process.env.NEXT_PUBLIC_NAKAMA_USE_SSL === "true";
+    socket = getClient().createSocket(useSSL, false);
     await socket.connect(session, true);
     return socket;
 }
