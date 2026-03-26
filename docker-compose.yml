@@ -1,0 +1,33 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: nakama
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: localdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  nakama:
+    build: .   # ← builds your Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "7349:7349"
+      - "7350:7350"
+      - "7351:7351"
+    environment:
+      - DATABASE_URL=postgres:localdb@postgres:5432/nakama
+    restart: on-failure
+
+volumes:
+  pgdata:
