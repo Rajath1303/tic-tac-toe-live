@@ -1,17 +1,14 @@
-# ---------- Stage 1: Install deps ----------
-FROM node:18-alpine AS deps
+# build
+FROM node:20-slim AS builder
+
 WORKDIR /app
+
 COPY package*.json ./
 RUN npm install
 
-# ---------- Stage 2: Build ----------
-FROM node:18-alpine AS builder
-WORKDIR /app
-
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# ← Declare build args
+# Declare build args
 ARG NEXT_PUBLIC_NAKAMA_HOST
 ARG NEXT_PUBLIC_NAKAMA_PORT
 ARG NEXT_PUBLIC_NAKAMA_SERVER_KEY
@@ -25,16 +22,18 @@ ENV NEXT_PUBLIC_NAKAMA_USE_SSL=$NEXT_PUBLIC_NAKAMA_USE_SSL
 
 RUN npm run build
 
-# ---------- Stage 3: Run ----------
-FROM node:18-alpine AS runner
+# start
+FROM node:20-slim
+
 WORKDIR /app
 
 ENV NODE_ENV=production
 
-COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/node_modules ./node_modules
+COPY package*.json ./
+RUN npm install --omit=dev
 
 EXPOSE 3000
+
 CMD ["npm", "start"]
